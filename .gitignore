@@ -1,0 +1,19 @@
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# Generated app bundles and distribution artifacts
+/dist/
+*.app/
+*.dmg
+*.xcarchive/
+*.dSYM/
+
+# Xcode build and per-user files
+DerivedData/
+build/
+xcuserdata/
+*.xcuserstate
+
+# macOS
+.DS_Store

@@ -1,0 +1,25 @@
+{
+   "configurations": [
+      {},
+      {
+         "type": "swift",
+         "request": "launch",
+         "args": [],
+         "cwd": "${workspaceFolder:SciClassification}",
+         "name": "Debug SciClassification",
+         "target": "SciClassification",
+         "configuration": "debug",
+         "preLaunchTask": "swift: Build Debug SciClassification"
+      },
+      {
+         "type": "swift",
+         "request": "launch",
+         "args": [],
+         "cwd": "${workspaceFolder:SciClassification}",
+         "name": "Release SciClassification",
+         "target": "SciClassification",
+         "configuration": "release",
+         "preLaunchTask": "swift: Build Release SciClassification"
+      }
+   ]
+}
