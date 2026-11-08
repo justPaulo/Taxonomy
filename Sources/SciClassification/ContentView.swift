@@ -149,6 +149,10 @@ struct ContentView: View {
                     .background(Color(red: 0.92, green: 0.96, blue: 0.92), in: Capsule())
             }
 
+            if let photo = taxon.defaultPhoto, let imageURL = photo.mediumURL {
+                animalPhoto(photo, url: imageURL, taxon: taxon)
+            }
+
             Divider()
 
             VStack(spacing: 0) {
@@ -167,6 +171,60 @@ struct ContentView: View {
         }
         .padding(22)
         .background(.white, in: RoundedRectangle(cornerRadius: 18))
+    }
+
+    private func animalPhoto(_ photo: TaxonPhoto, url: URL, taxon: Taxon) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            AsyncImage(url: url) { phase in
+                if let image = phase.image {
+                    image
+                        .resizable()
+                        .scaledToFill()
+                } else if phase.error != nil {
+                    photoPlaceholder
+                        .overlay {
+                            Text("Animal photo unavailable")
+                                .font(.callout)
+                                .foregroundStyle(.secondary)
+                        }
+                } else {
+                    photoPlaceholder
+                        .overlay {
+                            ProgressView("Loading photo…")
+                                .font(.callout)
+                        }
+                }
+            }
+            .frame(maxWidth: .infinity)
+            .frame(height: 230)
+            .clipShape(RoundedRectangle(cornerRadius: 14))
+            .accessibilityLabel("Photo of \(taxon.displayName)")
+
+            HStack(alignment: .top, spacing: 6) {
+                if let attribution = photo.attribution, !attribution.isEmpty {
+                    Text(attribution)
+                        .foregroundStyle(.secondary)
+                        .textSelection(.enabled)
+                }
+
+                Spacer(minLength: 4)
+
+                if let sourceURL = URL(string: "https://www.inaturalist.org/taxa/\(taxon.id)") {
+                    Link("Photo source", destination: sourceURL)
+                }
+            }
+            .font(.caption)
+        }
+    }
+
+    private var photoPlaceholder: some View {
+        Rectangle()
+            .fill(Color(red: 0.92, green: 0.96, blue: 0.92))
+            .overlay {
+                Image(systemName: "pawprint")
+                    .font(.system(size: 40))
+                    .foregroundStyle(Color(red: 0.19, green: 0.39, blue: 0.31).opacity(0.65))
+            }
     }
 
     @ViewBuilder
